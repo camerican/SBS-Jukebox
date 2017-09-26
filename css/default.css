@@ -1,0 +1,18 @@
+#jukebox {
+	font-size: 40px;
+	width: 400px;
+	margin: 0 auto;
+	text-align: center;
+}
+#jukebox .info {
+	height: 50px;
+	border: 2px solid #333;
+	border-radius: 15px;
+}
+#jukebox .controls span {
+	cursor: pointer;
+	transition: color 0.5s;
+}
+#jukebox .controls span:hover {
+	color: #c33;
+}
