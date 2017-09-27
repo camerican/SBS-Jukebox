@@ -12,17 +12,16 @@ function Jukebox(element){
     controls: element.querySelector(".controls"),
     info: element.querySelector(".info")
   };
-  let that = this;
+
   this.htmlElements.controls.addEventListener("click",function(event){
     if( event.target.classList.contains("play") ){
-      console.log("This", this)
-      that.play();
+      this.play();
     } else if( event.target.classList.contains("pause")) {
-      that.pause();
+      this.pause();
     } else if( event.target.classList.contains("back")) {
-      that.back();
+      this.back();
     } else if( event.target.classList.contains("next")) {
-      that.next();
+      this.next();
     }
   });
 }
@@ -46,34 +45,10 @@ Jukebox.prototype = {
     this.htmlElements.info.innerText = this.songs[this.currentSong].name;
     this.htmlElements.audio.src = `media/${this.songs[this.currentSong].file}`;
   }
-}
+};
 
 
 let myJukebox;
 document.addEventListener("DOMContentLoaded",function(){
   myJukebox = new Jukebox(document.getElementById("jukebox"));
 });
-
-// document.addEventListener("DOMContentLoaded",function(){
-//   elAudio = document.querySelector("audio");
-//   elAudio.play();
-
-//   document.querySelector("#jukebox .controls").addEventListener("click",function(event){
-//     if( event.target.classList.contains("play") ){
-//       elAudio.play();
-//     } else if( event.target.classList.contains("pause")) {
-//       elAudio.pause();
-//     } else if( event.target.classList.contains("back")) {
-//       currentSong -= 1;
-//       if( currentSong < 0) {
-//         currentSong = songs.length - 1;
-//       }
-//       elAudio.src = `media/${songs[currentSong]}`;
-//       elAudio.play();
-//     } else if( event.target.classList.contains("next")) {
-//       currentSong = (currentSong + 1) % songs.length;
-//       elAudio.src = `media/${songs[currentSong]}`;
-//       elAudio.play();
-//     }
-//   });
-// });
