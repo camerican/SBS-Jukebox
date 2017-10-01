@@ -43,8 +43,6 @@ This is a step-by-step guide intended for New York Code + Design Academy student
 
 1. Use the SoundCloud playlist
 1. Have play functionality conditionally retrieve SC stream
-1. Refactor play method
-1. Refector pause method
-1. Refector back method
-1. Refector next method
-1. Play next song upon completion
+1. Refactor play, pause, back, next methods
+1. Refector with getter/setter helpers
+1. Add seek slider

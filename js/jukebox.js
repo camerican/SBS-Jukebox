@@ -5,9 +5,23 @@ SC.initialize({
 function Jukebox(element){
   this.songs = [];
   this.currentSong = 0;
+  // getter for current song
+  Object.defineProperty(this,"song",{
+    get: function(){
+      return this.songs[this.currentSong];
+    } 
+  });
+  // getter and setter for current player, on current song
+  Object.defineProperty(this,"player",{
+    get: function(){
+      return this.song && this.song.player;
+    },
+    set: function(player) {
+      this.song.player = player;
+    }
+  });
   // populate list of songs
   SC.get("/tracks",{q: "Dogs"}).then((response) => {
-    console.log("this", this)
     this.songs.push( ...response );
     this.play();
   });
@@ -31,27 +45,26 @@ function Jukebox(element){
 }
 Jukebox.prototype = {
   play: function(){
-    const song = this.songs[this.currentSong];
-    if( song.player ) {
-      song.player.play();
+    if( this.player ) {
+      this.player.play();
     } else {
-      SC.stream(`/tracks/${song.id}`).then(function(player){
-        song.player = player;
+      SC.stream(`/tracks/${this.song.id}`).then((player) => {
+        this.player = player;
         player.play();
       });
     }
     this.updateUI();
   },
   pause: function(){
-    if( this.songs[this.currentSong].player ) {
-      this.songs[this.currentSong].player.pause();
+    if( this.player ) {
+      this.player.pause();
       return true;
     }
     return false;
   },
   stop: function(){
     if( this.pause() ) {
-      this.songs[this.currentSong].player.seek(0);
+      this.player.seek(0);
     }
   },
   back: function(){
@@ -65,7 +78,7 @@ Jukebox.prototype = {
     this.play();
   },
   updateUI: function(){
-    this.htmlElements.info.innerText = this.songs[this.currentSong].title;
+    this.htmlElements.info.innerText = this.song.title;
   }
 };
 
