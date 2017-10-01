@@ -1,19 +1,23 @@
+SC.initialize({
+  client_id: 'fd4e76fc67798bfa742089ed619084a6'
+});
 
 function Jukebox(element){
-  this.songs = [
-    { name: "Corruption", file: "corruption.mp3"},
-    { name: "Hitman", file: "hitman.mp3"},
-    { name: "Killers", file: "killers.mp3"}
-  ];
+  this.songs = [];
   this.currentSong = 0;
+  // populate list of songs
+  SC.get("/tracks",{q: "Dogs"}).then((response) => {
+    console.log("this", this)
+    this.songs.push( ...response );
+    this.play();
+  });
   this.htmlElements = {
     container: element,
-    audio: element.querySelector("audio"),
     controls: element.querySelector(".controls"),
     info: element.querySelector(".info")
   };
 
-  this.htmlElements.controls.addEventListener("click",function(event){
+  this.htmlElements.controls.addEventListener("click", (event) => {
     if( event.target.classList.contains("play") ){
       this.play();
     } else if( event.target.classList.contains("pause")) {
@@ -27,23 +31,41 @@ function Jukebox(element){
 }
 Jukebox.prototype = {
   play: function(){
+    const song = this.songs[this.currentSong];
+    if( song.player ) {
+      song.player.play();
+    } else {
+      SC.stream(`/tracks/${song.id}`).then(function(player){
+        song.player = player;
+        player.play();
+      });
+    }
     this.updateUI();
-    this.htmlElements.audio.play();
   },
   pause: function(){
-    this.htmlElements.audio.pause();
+    if( this.songs[this.currentSong].player ) {
+      this.songs[this.currentSong].player.pause();
+      return true;
+    }
+    return false;
+  },
+  stop: function(){
+    if( this.pause() ) {
+      this.songs[this.currentSong].player.seek(0);
+    }
   },
   back: function(){
+    this.stop();
     this.currentSong = (this.currentSong + this.songs.length - 1) % this.songs.length;
     this.play();
   },
   next: function(){
+    this.stop();
     this.currentSong = (this.currentSong + 1) % this.songs.length;
     this.play();
   },
   updateUI: function(){
-    this.htmlElements.info.innerText = this.songs[this.currentSong].name;
-    this.htmlElements.audio.src = `media/${this.songs[this.currentSong].file}`;
+    this.htmlElements.info.innerText = this.songs[this.currentSong].title;
   }
 };
 
