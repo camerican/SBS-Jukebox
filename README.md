@@ -46,6 +46,6 @@ This is a step-by-step guide intended for New York Code + Design Academy student
 
 1. [Use the SoundCloud playlist](https://youtu.be/n2OmKdH9nu8)
 1. [Have play functionality conditionally retrieve SC stream](https://youtu.be/n4tChGQmgFM)
-1. Refactor play, pause, back, next methods
-1. Refector with getter/setter helpers
-1. Add seek slider
+1. [Refactor play, pause, back, next methods](https://youtu.be/562UWGVg11g)
+1. [Refector with getter/setter helpers](https://youtu.be/gym7zPjLXBU)
+1. [Add seek slider](https://youtu.be/TtLTVAR09gM)

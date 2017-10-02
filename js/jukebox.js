@@ -25,13 +25,17 @@ function Jukebox(element){
     this.songs.push( ...response );
     this.play();
   });
-  this.htmlElements = {
+  this.html = {
     container: element,
     controls: element.querySelector(".controls"),
+    seek: element.querySelector(".seek input"),
     info: element.querySelector(".info")
   };
 
-  this.htmlElements.controls.addEventListener("click", (event) => {
+  this.html.seek.addEventListener("change",(event) => {
+    this.player.seek(event.target.value * this.song.duration / 10000);
+  });
+  this.html.controls.addEventListener("click", (event) => {
     if( event.target.classList.contains("play") ){
       this.play();
     } else if( event.target.classList.contains("pause")) {
@@ -42,6 +46,11 @@ function Jukebox(element){
       this.next();
     }
   });
+
+  // start-up an interval to update the slider
+  setInterval( () => {
+    this.html.seek.value = this.player.currentTime() / this.song.duration * 10000;
+  },500);
 }
 Jukebox.prototype = {
   play: function(){
@@ -78,7 +87,7 @@ Jukebox.prototype = {
     this.play();
   },
   updateUI: function(){
-    this.htmlElements.info.innerText = this.song.title;
+    this.html.info.innerText = this.song.title;
   }
 };
 

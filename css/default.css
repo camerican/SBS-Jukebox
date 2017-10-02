@@ -8,6 +8,7 @@
 	height: 50px;
 	border: 2px solid #333;
 	border-radius: 15px;
+	overflow: hidden;
 }
 #jukebox .controls span {
 	cursor: pointer;
@@ -15,4 +16,7 @@
 }
 #jukebox .controls span:hover {
 	color: #c33;
+}
+#jukebox .controls .seek input {
+	width: 100%;
 }
